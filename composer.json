@@ -1,0 +1,20 @@
+{
+    "name": "stee1cat/commerceml-exchange",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gennadiy Khatuntsev",
+            "email": "e.steelcat@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "CommerceMLExchange": "src/"
+        }
+    },
+    "require": {
+        "monolog/monolog": "^1.23",
+        "php-di/php-di": "^5.4"
+    }
+}
