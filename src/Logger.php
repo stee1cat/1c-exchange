@@ -7,7 +7,6 @@ namespace stee1cat\CommerceMLExchange;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
-use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonoLogger;
 
 /**
@@ -36,14 +35,10 @@ class Logger {
 
         $formatter = new LineFormatter(null, null, false, true);
 
-        $stdout = new StreamHandler('php://stdout');
-        $stdout->setFormatter($formatter);
-
         $rotating = new RotatingFileHandler($this->getLogFilename());
         $rotating->setFormatter($formatter);
 
         $this->logger = new MonoLogger($this->name);
-        $this->logger->pushHandler($stdout);
         $this->logger->pushHandler($rotating);
     }
 
