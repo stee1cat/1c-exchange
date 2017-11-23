@@ -3,7 +3,7 @@
  * Copyright (c) 2017 Gennadiy Khatuntsev <e.steelcat@gmail.com>
  */
 
-namespace stee1cat\CommerceMLExchange\Catalog;
+namespace stee1cat\CommerceMLExchange\Model;
 
 /**
  * Class Group

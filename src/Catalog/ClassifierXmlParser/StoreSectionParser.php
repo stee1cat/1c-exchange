@@ -5,7 +5,7 @@
 
 namespace stee1cat\CommerceMLExchange\Catalog\ClassifierXmlParser;
 
-use stee1cat\CommerceMLExchange\Catalog\Store;
+use stee1cat\CommerceMLExchange\Model\Store;
 
 /**
  * Class StoreSectionParser

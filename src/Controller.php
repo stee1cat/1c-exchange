@@ -5,6 +5,8 @@
 
 namespace stee1cat\CommerceMLExchange;
 
+use stee1cat\CommerceMLExchange\Model\AuthData;
+
 /**
  * Class Controller
  * @package stee1cat\CommerceMLExchange
@@ -12,14 +14,13 @@ namespace stee1cat\CommerceMLExchange;
 class Controller extends AbstractController {
 
     public function stageCheckauth() {
-        $username = $_SERVER['PHP_AUTH_USER'];
-        $password = $_SERVER['PHP_AUTH_PW'];
+        $authData = new AuthData();
 
-        if ($this->checkAuth($username, $password)) {
+        if ($this->checkAuth($authData)) {
             $this->success(session_name() . PHP_EOL . session_id());
         }
         else {
-            $this->failure(sprintf('Access denied for %s.', $username));
+            $this->failure(sprintf('Access denied for %s.', $authData->getUsername()));
         }
     }
 
@@ -46,7 +47,7 @@ class Controller extends AbstractController {
             $this->failure('Empty filename');
         }
 
-        if (!preg_match('/^[0-9a-zA-Z_\-.\/]+$/', $_GET['filename'])) {
+        if (!$this->validateFilename($_GET['filename'])) {
             $this->failure('Incorrect file name');
         }
 
@@ -54,14 +55,23 @@ class Controller extends AbstractController {
             $this->failure('Failed to prepare directory');
         }
 
-        $this->writeFile();
-
-        $this->success();
+        if ($this->writeFile()) {
+            $this->success();
+        }
     }
 
     public function stageImport() {
         if (!isset($_GET['filename'])) {
             $this->failure('Empty filename');
+        }
+
+        if (!$this->validateFilename($_GET['filename'])) {
+            $this->failure('Incorrect file name');
+        }
+
+        $filePath = $this->getFilePath($_GET['filename']);
+        if (!file_exists($filePath)) {
+            $this->failure('File not exists');
         }
 
         $this->success();
@@ -83,21 +93,30 @@ class Controller extends AbstractController {
     }
 
     /**
-     * @param string $username
-     * @param string $password
+     * @param AuthData $authData
      *
      * @return boolean
+     *
      */
-    protected function checkAuth($username, $password) {
-        return $this->config->getUsername() === $username && $this->config->getPassword() === $password;
+    protected function checkAuth(AuthData $authData) {
+        $usernameIsValid = $this->config->getUsername() === $authData->getUsername();
+        $passwordIsValid = $this->config->getPassword() === $authData->getPassword();
+
+        return $usernameIsValid && $passwordIsValid;
     }
 
-    private function writeFile() {
-        $filename = $this->config->getUploadPath() . DIRECTORY_SEPARATOR . basename($_GET['filename']);
+    protected function getFilePath($filename) {
+        return $this->config->getUploadPath() . DIRECTORY_SEPARATOR . basename($filename);
+    }
 
-        $handle = fopen($filename, 'ab');
+    protected function writeFile() {
+        $filePath = $this->getFilePath($_GET['filename']);
+
+        $handle = fopen($filePath, 'ab');
         if (!$handle) {
             $this->failure('Error opening file');
+
+            return false;
         }
 
         $data = file_get_contents('php://input');
@@ -107,7 +126,20 @@ class Controller extends AbstractController {
         $size = strlen($data);
         if ($result !== $size) {
             $this->failure('Wrong data size written');
+
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @return bool
+     */
+    protected function validateFilename($filename) {
+        return !!preg_match('/^[0-9a-zA-Z_\-.\/]+$/', $filename);
     }
 
 }

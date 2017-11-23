@@ -16,5 +16,10 @@
     "require": {
         "monolog/monolog": "^1.23",
         "php-di/php-di": "^5.4"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.3",
+        "codeception/specify": "^1.0",
+        "mikey179/vfsStream": "^1.6"
     }
 }

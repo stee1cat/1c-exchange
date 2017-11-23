@@ -5,7 +5,7 @@
 
 namespace stee1cat\CommerceMLExchange\Catalog\ClassifierXmlParser;
 
-use stee1cat\CommerceMLExchange\Catalog\Group;
+use stee1cat\CommerceMLExchange\Model\Group;
 
 /**
  * Class GroupSectionParser

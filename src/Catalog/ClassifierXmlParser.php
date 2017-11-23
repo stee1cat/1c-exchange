@@ -7,6 +7,8 @@ namespace stee1cat\CommerceMLExchange\Catalog;
 
 use stee1cat\CommerceMLExchange\Catalog\ClassifierXmlParser\GroupSectionParser;
 use stee1cat\CommerceMLExchange\Catalog\ClassifierXmlParser\StoreSectionParser;
+use stee1cat\CommerceMLExchange\Model\Group;
+use stee1cat\CommerceMLExchange\Model\Store;
 
 /**
  * Class ClassifierXmlParser
@@ -17,16 +19,16 @@ class ClassifierXmlParser {
     /**
      * @var string
      */
-    protected $data;
+    protected $content;
 
     /**
      * @var \SimpleXMLElement
      */
     protected $xml;
 
-    public function __construct($data) {
-        $this->data = $data;
-        $this->xml = simplexml_load_string($data);
+    public function __construct($content) {
+        $this->content = $content;
+        $this->xml = simplexml_load_string($content);
     }
 
     /**
