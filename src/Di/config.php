@@ -3,8 +3,10 @@
  * Copyright (c) 2017 Gennadiy Khatuntsev <e.steelcat@gmail.com>
  */
 
+use stee1cat\CommerceMLExchange\Http\Request;
 use stee1cat\CommerceMLExchange\Logger;
 
 return [
-    Logger::class => \DI\object(Logger::class)
+    Logger::class => \DI\object(Logger::class),
+    Request::class => \DI\object(Request::class)
 ];

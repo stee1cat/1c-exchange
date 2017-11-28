@@ -5,6 +5,7 @@
 
 namespace stee1cat\CommerceMLExchange;
 
+use stee1cat\CommerceMLExchange\Http\Request;
 use stee1cat\CommerceMLExchange\Model\AuthData;
 
 /**
@@ -20,7 +21,7 @@ class Controller extends AbstractController {
             $this->success(session_name() . PHP_EOL . session_id());
         }
         else {
-            $this->failure(sprintf('Access denied for %s.', $authData->getUsername()));
+            $this->failure(sprintf('Access denied' . ($authData->getUsername() ? ' for %s' : ''), $authData->getUsername()));
         }
     }
 
@@ -37,17 +38,20 @@ class Controller extends AbstractController {
         $this->message($response);
         $this->logger->info('< SUCCESS ' . $response);
 
-        if (isset($_GET['version'])) {
-            $_SESSION['version'] = $_GET['version'];
+        $request = $this->container->get(Request::class);
+        if ($request->get('version')) {
+            $_SESSION['version'] = $request->get('version');
         }
     }
 
     public function stageUpload() {
-        if (!isset($_GET['filename'])) {
+        $request = $this->container->get(Request::class);
+
+        if (!$request->get('filename')) {
             $this->failure('Empty filename');
         }
 
-        if (!$this->validateFilename($_GET['filename'])) {
+        if (!$this->validateFilename($request->get('filename'))) {
             $this->failure('Incorrect file name');
         }
 
@@ -61,15 +65,17 @@ class Controller extends AbstractController {
     }
 
     public function stageImport() {
-        if (!isset($_GET['filename'])) {
+        $request = $this->container->get(Request::class);
+
+        if (!$request->get('filename')) {
             $this->failure('Empty filename');
         }
 
-        if (!$this->validateFilename($_GET['filename'])) {
+        if (!$this->validateFilename($request->get('filename'))) {
             $this->failure('Incorrect file name');
         }
 
-        $filePath = $this->getFilePath($_GET['filename']);
+        $filePath = $this->getFilePath($request->get('filename'));
         if (!file_exists($filePath)) {
             $this->failure('File not exists');
         }
@@ -110,7 +116,8 @@ class Controller extends AbstractController {
     }
 
     protected function writeFile() {
-        $filePath = $this->getFilePath($_GET['filename']);
+        $request = $this->container->get(Request::class);
+        $filePath = $this->getFilePath($request->get('filename'));
 
         $handle = fopen($filePath, 'ab');
         if (!$handle) {

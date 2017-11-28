@@ -6,6 +6,7 @@
 namespace stee1cat\CommerceMLExchange;
 
 use stee1cat\CommerceMLExchange\Di\Container;
+use stee1cat\CommerceMLExchange\Http\Request;
 
 /**
  * Class CommerceMLExchange
@@ -36,8 +37,11 @@ class CommerceMLExchange {
         $controller = new Controller($this->container, $this->config);
         $controller->beforeAction();
 
-        if (isset($_GET['type']) && isset($_GET['mode'])) {
-            switch (strtolower($_GET['mode'])) {
+        /** @var Request $request */
+        $request = $this->container->get(Request::class);
+
+        if ($request->get('type') && $request->get('mode')) {
+            switch (strtolower($request->get('mode'))) {
                 case 'checkauth':
                     $controller->stageCheckauth();
                     break;

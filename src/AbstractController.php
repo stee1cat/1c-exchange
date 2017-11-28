@@ -6,6 +6,7 @@
 namespace stee1cat\CommerceMLExchange;
 
 use stee1cat\CommerceMLExchange\Di\Container;
+use stee1cat\CommerceMLExchange\Http\Request;
 
 /**
  * Class AbstractController
@@ -35,7 +36,10 @@ abstract class AbstractController {
     }
 
     public function beforeAction() {
-        $this->logger->info(sprintf('> %s %s', $_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']));
+        /** @var Request $request */
+        $request = $this->container->get(Request::class);
+
+        $this->logger->info(sprintf('> %s %s', $request->getMethod(), $request->getUri()));
     }
 
     public function afterAction() {
