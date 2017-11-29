@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+install:
+  - composer self-update && composer --version
+  - composer install --prefer-source --no-interaction --dev
+
+script:
+  - php codecept run unit
