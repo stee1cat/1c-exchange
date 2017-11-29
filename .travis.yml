@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
 
@@ -12,7 +11,7 @@ cache:
 
 install:
   - composer self-update && composer --version
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --prefer-source --no-interaction
 
 script:
-  - php codecept run unit
+  - vendor\bin\codecept run unit
