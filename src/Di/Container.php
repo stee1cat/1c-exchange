@@ -32,6 +32,8 @@ class Container {
      * @param string $name
      *
      * @return mixed
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
      */
     public function get($name) {
         return $this->container->get($name);

@@ -54,6 +54,14 @@ abstract class AbstractController {
         $this->failure('Empty command type or mode');
     }
 
+    public function internalServerErrorAction(\Exception $exception) {
+        $this->failure('Internal server error');
+
+        $this->logger->error($exception->getMessage(), [
+            'trace' => $exception->getTrace(),
+        ]);
+    }
+
     protected function success($message = '') {
         $this->message('success' . PHP_EOL);
         $this->message($message);

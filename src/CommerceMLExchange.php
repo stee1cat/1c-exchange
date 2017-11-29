@@ -35,34 +35,41 @@ class CommerceMLExchange {
 
     public function start() {
         $controller = new Controller($this->container, $this->config);
-        $controller->beforeAction();
 
-        /** @var Request $request */
-        $request = $this->container->get(Request::class);
+        try {
+            $controller->beforeAction();
 
-        if ($request->get('type') && $request->get('mode')) {
-            switch (strtolower($request->get('mode'))) {
-                case 'checkauth':
-                    $controller->stageCheckauth();
-                    break;
-                case 'init':
-                    $controller->stageInit();
-                    break;
-                case 'file':
-                    $controller->stageUpload();
-                    break;
-                case 'import':
-                    $controller->stageImport();
-                    break;
-                default:
-                    $controller->unknownCommandAction();
+            /** @var Request $request */
+            $request = $this->container->get(Request::class);
+
+            if ($request->get('type') && $request->get('mode')) {
+                switch (strtolower($request->get('mode'))) {
+                    case 'checkauth':
+                        $controller->stageCheckauth();
+                        break;
+                    case 'init':
+                        $controller->stageInit();
+                        break;
+                    case 'file':
+                        $controller->stageUpload();
+                        break;
+                    case 'import':
+                        $controller->stageImport();
+                        break;
+                    default:
+                        $controller->unknownCommandAction();
+                }
             }
+            else {
+                $controller->emptyCommandAction();
+            }
+
+            $controller->afterAction();
         }
-        else {
-            $controller->emptyCommandAction();
+        catch (\Exception $exception) {
+            $controller->internalServerErrorAction($exception);
         }
 
-        $controller->afterAction();
     }
 
     protected function bootstrap() {
