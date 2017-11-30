@@ -34,7 +34,7 @@ class CommerceMLExchange {
     }
 
     public function start() {
-        $controller = new Controller($this->container, $this->config);
+        $controller = new Controller($this->container);
 
         try {
             $controller->beforeAction();

@@ -3,11 +3,11 @@
  * Copyright (c) 2017 Gennadiy Khatuntsev <e.steelcat@gmail.com>
  */
 
-namespace stee1cat\CommerceMLExchange\Model;
+namespace stee1cat\CommerceMLExchange\Http;
 
 /**
  * Class AuthData
- * @package stee1cat\CommerceMLExchange\Model
+ * @package stee1cat\CommerceMLExchange\Http
  */
 class AuthData {
 
@@ -21,9 +21,9 @@ class AuthData {
      */
     protected $password;
 
-    public function __construct() {
-        $this->username = $_SERVER['PHP_AUTH_USER'];
-        $this->password = $_SERVER['PHP_AUTH_PW'];
+    public function __construct($username, $password) {
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**

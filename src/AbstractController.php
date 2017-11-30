@@ -29,17 +29,21 @@ abstract class AbstractController {
      */
     protected $logger;
 
-    public function __construct(Container $container, Config $config) {
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    public function __construct(Container $container) {
         $this->container = $container;
+
         $this->logger = $container->get(Logger::class);
-        $this->config = $config;
+        $this->config = $container->get(Config::class);
+        $this->request = $container->get(Request::class);
     }
 
     public function beforeAction() {
-        /** @var Request $request */
-        $request = $this->container->get(Request::class);
-
-        $this->logger->info(sprintf('> %s %s', $request->getMethod(), $request->getUri()));
+        $this->logger->info(sprintf('> %s %s', $this->request->getMethod(), $this->request->getUri()));
     }
 
     public function afterAction() {

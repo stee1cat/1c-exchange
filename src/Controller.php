@@ -5,8 +5,7 @@
 
 namespace stee1cat\CommerceMLExchange;
 
-use stee1cat\CommerceMLExchange\Http\Request;
-use stee1cat\CommerceMLExchange\Model\AuthData;
+use stee1cat\CommerceMLExchange\Http\AuthData;
 
 /**
  * Class Controller
@@ -15,7 +14,7 @@ use stee1cat\CommerceMLExchange\Model\AuthData;
 class Controller extends AbstractController {
 
     public function stageCheckauth() {
-        $authData = new AuthData();
+        $authData = $this->request->getAuthData();
 
         if ($this->checkAuth($authData)) {
             $this->success(session_name() . PHP_EOL . session_id());
@@ -38,20 +37,17 @@ class Controller extends AbstractController {
         $this->message($response);
         $this->logger->info('< SUCCESS ' . $response);
 
-        $request = $this->container->get(Request::class);
-        if ($request->get('version')) {
-            $_SESSION['version'] = $request->get('version');
+        if ($this->request->get('version')) {
+            $_SESSION['version'] = $this->request->get('version');
         }
     }
 
     public function stageUpload() {
-        $request = $this->container->get(Request::class);
-
-        if (!$request->get('filename')) {
+        if (!$this->request->get('filename')) {
             $this->failure('Empty filename');
         }
 
-        if (!$this->validateFilename($request->get('filename'))) {
+        if (!$this->validateFilename($this->request->get('filename'))) {
             $this->failure('Incorrect file name');
         }
 
@@ -65,17 +61,15 @@ class Controller extends AbstractController {
     }
 
     public function stageImport() {
-        $request = $this->container->get(Request::class);
-
-        if (!$request->get('filename')) {
+        if (!$this->request->get('filename')) {
             $this->failure('Empty filename');
         }
 
-        if (!$this->validateFilename($request->get('filename'))) {
+        if (!$this->validateFilename($this->request->get('filename'))) {
             $this->failure('Incorrect file name');
         }
 
-        $filePath = $this->getFilePath($request->get('filename'));
+        $filePath = $this->getFilePath($this->request->get('filename'));
         if (!file_exists($filePath)) {
             $this->failure('File not exists');
         }
@@ -116,8 +110,7 @@ class Controller extends AbstractController {
     }
 
     protected function writeFile() {
-        $request = $this->container->get(Request::class);
-        $filePath = $this->getFilePath($request->get('filename'));
+        $filePath = $this->getFilePath($this->request->get('filename'));
 
         $handle = fopen($filePath, 'ab');
         if (!$handle) {
