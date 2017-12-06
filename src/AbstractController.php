@@ -44,6 +44,7 @@ abstract class AbstractController {
 
     public function beforeAction() {
         $this->logger->info(sprintf('> %s %s', $this->request->getMethod(), $this->request->getUri()));
+        $this->logger->debug('>', $this->request->getEnvironment());
     }
 
     public function afterAction() {

@@ -58,6 +58,14 @@ class Logger {
         $this->logger->error($message, $context);
     }
 
+    /**
+     * @param string $message
+     * @param array $context
+     */
+    public function debug($message, $context = []) {
+        $this->logger->debug($message, $context);
+    }
+
     protected function getLogFilename() {
         return $this->config->getLogPath() . DIRECTORY_SEPARATOR . $this->name . '.log';
     }

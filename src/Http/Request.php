@@ -58,6 +58,13 @@ class Request {
     }
 
     /**
+     * @return string[]
+     */
+    public function getEnvironment() {
+        return $this->environment;
+    }
+
+    /**
      * @return AuthData
      */
     public function getAuthData() {
