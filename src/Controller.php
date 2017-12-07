@@ -77,6 +77,10 @@ class Controller extends AbstractController {
         $this->success();
     }
 
+    public function stageComplete() {
+        $this->success();
+    }
+
     protected function prepareUploadPath() {
         $mode = 0777;
         $uploadPath = rtrim($this->config->getUploadPath(), '/\\');

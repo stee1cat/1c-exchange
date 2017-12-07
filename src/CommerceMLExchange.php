@@ -56,6 +56,9 @@ class CommerceMLExchange {
                     case 'import':
                         $controller->stageImport();
                         break;
+                    case 'complete':
+                        $controller->stageComplete();
+                        break;
                     default:
                         $controller->unknownCommandAction();
                 }
