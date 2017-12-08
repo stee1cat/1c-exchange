@@ -11,42 +11,65 @@ use stee1cat\CommerceMLExchange\Model\Group;
 use stee1cat\CommerceMLExchange\Model\Store;
 
 /**
- * Class ClassifierXmlParser
+ * Class ClassifierXmlXmlParser
  * @package stee1cat\CommerceMLExchange\Catalog
  */
-class ClassifierXmlParser {
+class ClassifierXmlParser implements XmlParserInterface {
 
     /**
-     * @var string
+     * @var GroupSectionParser
      */
-    protected $content;
+    protected $groupSectionParser;
+
+    /**
+     * @var StoreSectionParser
+     */
+    protected $storeSectionParser;
 
     /**
      * @var \SimpleXMLElement
      */
     protected $xml;
 
-    public function __construct($content) {
-        $this->content = $content;
-        $this->xml = simplexml_load_string($content);
+    /**
+     * @var Group[]
+     */
+    protected $groups;
+
+    /**
+     * @var Store[]
+     */
+    protected $stores;
+
+    public function __construct(\SimpleXMLElement $xml) {
+        $this->xml = $xml;
+    }
+
+    public function parse() {
+        if (!$this->groupSectionParser) {
+            $this->groupSectionParser = new GroupSectionParser($this->xml);
+        }
+
+        if (!$this->storeSectionParser) {
+            $this->storeSectionParser = new StoreSectionParser($this->xml);
+        }
+
+        $this->groups = $this->groupSectionParser->parse();
+        $this->stores = $this->storeSectionParser->parse();
     }
 
     /**
-     * @return array|Group[]
+     * @return Group[]
      */
     public function getGroups() {
-        $parser = new GroupSectionParser($this->xml);
-
-        return $parser->parse();
+        return $this->groups;
     }
 
     /**
-     * @return array|Store[]
+     * @return Store[]
      */
     public function getStores() {
-        $parser = new StoreSectionParser($this->xml);
-
-        return $parser->parse();
+        return $this->stores;
     }
 
 }

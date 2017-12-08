@@ -5,7 +5,6 @@
 
 namespace Catalog;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -16,8 +15,6 @@ use stee1cat\CommerceMLExchange\Catalog\ImportService;
  * @package Catalog
  */
 class ImportServiceTest extends Unit {
-
-    use Specify;
 
     /**
      * @var ImportService
@@ -47,26 +44,42 @@ class ImportServiceTest extends Unit {
         $this->assertEquals($content, $this->tester->getContent());
     }
 
-    public function testParseImportXml() {
-        $filename = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'import___29d3f7f0-36dd-4eea-a06c-4c325bed4285.xml';
-        $content = file_get_contents($filename);
-        $this->tester->parse($content);
+    public function testIsClassifier() {
+        $content = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ВерсияСхемы="3.1" ДатаФормирования="2017-12-07T10:00:00">
+    <Классификатор СодержитТолькоИзменения="true">
+        <Ид>8d9f1f3f-d0d4-4f94-abe4-8e15257279bb</Ид>
+    </Классификатор>
+    <Каталог СодержитТолькоИзменения="true">
+        <Ид>8d9f1f3f-d0d4-4f94-abe4-8e15257279bb</Ид>
+        <ИдКлассификатора>8d9f1f3f-d0d4-4f94-abe4-8e15257279bb</ИдКлассификатора>
+        <Наименование>goods</Наименование>
+        <Описание>goods</Описание>
+    </Каталог>
+</КоммерческаяИнформация>
+XML;
 
-        $this->specify('Groups', function () {
-            $groups = $this->tester->getGroups();
-            $firstGroup = $groups[0];
+        $xml = simplexml_load_string($content);
 
-            $this->assertEquals(1, count($groups));
-            $this->assertEquals(11, count($firstGroup->getGroups()));
-        });
+        $this->assertEquals(true, $this->tester->isClassifier($xml));
+    }
 
-        $this->specify('Stores', function () {
-            $stores = $this->tester->getStores();
-            $firstStore = $stores[0];
+    public function testIsCatalog() {
+        $content = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ВерсияСхемы="3.1" ДатаФормирования="2017-12-07T10:00:00">
+	<Каталог СодержитТолькоИзменения="true">
+		<Ид>8d9f1f3f-d0d4-4f94-abe4-8e15257279bb</Ид>
+		<ИдКлассификатора>8d9f1f3f-d0d4-4f94-abe4-8e15257279bb</ИдКлассификатора>
+		<Наименование>goods</Наименование>
+	</Каталог>
+</КоммерческаяИнформация>
+XML;
 
-            $this->assertEquals(13, count($stores));
-            $this->assertEquals('Домодедовская таможня', $firstStore->getName());
-        });
+        $xml = simplexml_load_string($content);
+
+        $this->assertEquals(true, $this->tester->isCatalog($xml));
     }
 
 }

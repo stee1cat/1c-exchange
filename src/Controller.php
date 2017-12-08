@@ -5,6 +5,7 @@
 
 namespace stee1cat\CommerceMLExchange;
 
+use stee1cat\CommerceMLExchange\Catalog\ImportService;
 use stee1cat\CommerceMLExchange\Http\AuthData;
 
 /**
@@ -61,20 +62,32 @@ class Controller extends AbstractController {
     }
 
     public function stageImport() {
-        if (!$this->request->get('filename')) {
+        $filename = $this->request->get('filename');
+
+        if (!$filename) {
             $this->failure('Empty filename');
         }
 
-        if (!$this->validateFilename($this->request->get('filename'))) {
+        if (!$this->validateFilename($filename)) {
             $this->failure('Incorrect file name');
         }
 
-        $filePath = $this->getFilePath($this->request->get('filename'));
+        $filePath = $this->getFilePath($filename);
         if (!file_exists($filePath)) {
             $this->failure('File not exists');
         }
+        else {
+            try {
+                /** @var ImportService $importService */
+                $importService = $this->container->get(ImportService::class);
+                $importService->import($filePath);
 
-        $this->success();
+                $this->success();
+            }
+            catch (\Exception $e) {
+                $this->internalServerErrorAction($e);
+            }
+        }
     }
 
     public function stageComplete() {

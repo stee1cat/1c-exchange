@@ -5,13 +5,14 @@
 
 namespace stee1cat\CommerceMLExchange\Catalog\ClassifierXmlParser;
 
+use stee1cat\CommerceMLExchange\Catalog\XmlParserInterface;
 use stee1cat\CommerceMLExchange\Model\Group;
 
 /**
  * Class GroupSectionParser
  * @package stee1cat\CommerceMLExchange
  */
-class GroupSectionParser {
+class GroupSectionParser implements XmlParserInterface {
 
     /**
      * @var \SimpleXMLElement
