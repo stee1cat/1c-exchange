@@ -34,12 +34,12 @@ class ClassifierXmlParser implements XmlParserInterface {
     /**
      * @var Group[]
      */
-    protected $groups;
+    protected $groups = [];
 
     /**
      * @var Store[]
      */
-    protected $stores;
+    protected $stores = [];
 
     public function __construct(\SimpleXMLElement $xml) {
         $this->xml = $xml;

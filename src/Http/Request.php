@@ -17,7 +17,7 @@ class Request {
     protected $params = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $environment = [];
 

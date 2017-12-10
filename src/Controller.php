@@ -153,7 +153,7 @@ class Controller extends AbstractController {
     /**
      * @param string $filename
      *
-     * @return bool
+     * @return boolean
      */
     protected function validateFilename($filename) {
         return !!preg_match('/^[0-9a-zA-Z_\-.\/]+$/', $filename);

@@ -21,7 +21,7 @@ class CatalogXmlParser implements XmlParserInterface {
     /**
      * @var Product[]
      */
-    protected $goods;
+    protected $products = [];
 
     public function __construct(\SimpleXMLElement $xml) {
         $this->xml = $xml;
@@ -32,7 +32,7 @@ class CatalogXmlParser implements XmlParserInterface {
         $elements = $this->xml->Каталог->Товары->children();
 
         if (count($elements)) {
-            $this->goods = $this->walk($elements);
+            $this->products = $this->walk($elements);
         }
 
         return $result;
@@ -42,7 +42,7 @@ class CatalogXmlParser implements XmlParserInterface {
      * @return Product[]
      */
     public function getProducts() {
-        return $this->goods;
+        return $this->products;
     }
 
     protected function walk($nodes) {

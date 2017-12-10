@@ -6,8 +6,7 @@
 namespace stee1cat\CommerceMLExchange\Catalog;
 
 use stee1cat\CommerceMLExchange\Catalog\Exception\CatalogLoadException;
-use stee1cat\CommerceMLExchange\Model\Group;
-use stee1cat\CommerceMLExchange\Model\Store;
+use stee1cat\CommerceMLExchange\EventDispatcher;
 
 /**
  * Class ImportService
@@ -26,14 +25,13 @@ class ImportService {
     protected $file;
 
     /**
-     * @var Group[]
+     * @var EventDispatcher
      */
-    protected $groups;
+    protected $eventDispatcher;
 
-    /**
-     * @var Store[]
-     */
-    protected $stores;
+    public function __construct(EventDispatcher $eventDispatcher) {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     public function import($file) {
         $this->file = $file;
