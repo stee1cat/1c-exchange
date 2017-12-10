@@ -9,6 +9,7 @@ use Codeception\Test\Unit;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use stee1cat\CommerceMLExchange\Catalog\ImportService;
+use stee1cat\CommerceMLExchange\EventDispatcher;
 
 /**
  * Class ImportServiceTest
@@ -27,7 +28,7 @@ class ImportServiceTest extends Unit {
     protected $root;
 
     protected function _before() {
-        $this->tester = new ImportService();
+        $this->tester = new ImportService(new EventDispatcher());
         $this->root = vfsStream::setup();
     }
 
