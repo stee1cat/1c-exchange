@@ -25,6 +25,7 @@ class Container {
             Config::class => $config,
             __DIR__ . DIRECTORY_SEPARATOR . 'config.php',
         ]);
+
         $this->container = $builder->build();
     }
 

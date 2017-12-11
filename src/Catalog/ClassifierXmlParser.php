@@ -31,21 +31,16 @@ class ClassifierXmlParser implements XmlParserInterface {
      */
     protected $xml;
 
-    /**
-     * @var Group[]
-     */
-    protected $groups = [];
-
-    /**
-     * @var Store[]
-     */
-    protected $stores = [];
-
     public function __construct(\SimpleXMLElement $xml) {
         $this->xml = $xml;
     }
 
+    /**
+     * @return Result
+     */
     public function parse() {
+        $result = new Result();
+
         if (!$this->groupSectionParser) {
             $this->groupSectionParser = new GroupSectionParser($this->xml);
         }
@@ -54,22 +49,10 @@ class ClassifierXmlParser implements XmlParserInterface {
             $this->storeSectionParser = new StoreSectionParser($this->xml);
         }
 
-        $this->groups = $this->groupSectionParser->parse();
-        $this->stores = $this->storeSectionParser->parse();
-    }
+        $result->setGroups($this->groupSectionParser->parse());
+        $result->setStores($this->storeSectionParser->parse());
 
-    /**
-     * @return Group[]
-     */
-    public function getGroups() {
-        return $this->groups;
-    }
-
-    /**
-     * @return Store[]
-     */
-    public function getStores() {
-        return $this->stores;
+        return $result;
     }
 
 }

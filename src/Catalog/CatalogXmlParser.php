@@ -18,31 +18,21 @@ class CatalogXmlParser implements XmlParserInterface {
      */
     protected $xml;
 
-    /**
-     * @var Product[]
-     */
-    protected $products = [];
-
     public function __construct(\SimpleXMLElement $xml) {
         $this->xml = $xml;
     }
 
     public function parse() {
-        $result = [];
+        $result = new Result();
         $elements = $this->xml->Каталог->Товары->children();
 
         if (count($elements)) {
-            $this->products = $this->walk($elements);
+            $products = $this->walk($elements);
+
+            $result->setProducts($products);
         }
 
         return $result;
-    }
-
-    /**
-     * @return Product[]
-     */
-    public function getProducts() {
-        return $this->products;
     }
 
     protected function walk($nodes) {

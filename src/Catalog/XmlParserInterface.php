@@ -12,6 +12,10 @@ namespace stee1cat\CommerceMLExchange\Catalog;
 interface XmlParserInterface {
 
     public function __construct(\SimpleXMLElement $xml);
+
+    /**
+     * @return Result
+     */
     public function parse();
 
 }

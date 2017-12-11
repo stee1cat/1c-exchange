@@ -50,10 +50,10 @@ XML;
     }
 
     public function testParse() {
-        $this->tester->parse();
+        $result = $this->tester->parse();
 
-        $this->specify('Products', function () {
-            $products = $this->tester->getProducts();
+        $this->specify('Products', function () use ($result) {
+            $products = $result->getProducts();
             $firstProduct = $products[0];
 
             $this->assertInstanceOf(Product::class, $firstProduct);

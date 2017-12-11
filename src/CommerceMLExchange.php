@@ -75,6 +75,12 @@ class CommerceMLExchange {
 
     }
 
+    public function subscribe($eventName, $callback) {
+        /** @var EventDispatcher $eventDispatcher */
+        $eventDispatcher = $this->container->get(EventDispatcher::class);
+        $eventDispatcher->addListener($eventName,  $callback);
+    }
+
     protected function bootstrap() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
