@@ -9,8 +9,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "stee1cat\\CommerceMLExchange": "src/"
+        "psr-4": {
+            "stee1cat\\CommerceMLExchange\\": "src/"
         }
     },
     "require": {
