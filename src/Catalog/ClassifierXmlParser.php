@@ -7,8 +7,6 @@ namespace stee1cat\CommerceMLExchange\Catalog;
 
 use stee1cat\CommerceMLExchange\Catalog\ClassifierXmlParser\GroupSectionParser;
 use stee1cat\CommerceMLExchange\Catalog\ClassifierXmlParser\StoreSectionParser;
-use stee1cat\CommerceMLExchange\Model\Group;
-use stee1cat\CommerceMLExchange\Model\Store;
 
 /**
  * Class ClassifierXmlXmlParser

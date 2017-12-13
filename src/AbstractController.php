@@ -34,6 +34,14 @@ abstract class AbstractController {
      */
     protected $request;
 
+    /**
+     * AbstractController constructor.
+     *
+     * @param Container $container
+     *
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
     public function __construct(Container $container) {
         $this->container = $container;
 

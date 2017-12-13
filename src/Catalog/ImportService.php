@@ -34,6 +34,11 @@ class ImportService {
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param string $file
+     *
+     * @throws CatalogLoadException
+     */
     public function import($file) {
         $this->file = $file;
 

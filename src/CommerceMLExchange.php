@@ -75,6 +75,13 @@ class CommerceMLExchange {
 
     }
 
+    /**
+     * @param $eventName
+     * @param $callback
+     *
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
     public function subscribe($eventName, $callback) {
         /** @var EventDispatcher $eventDispatcher */
         $eventDispatcher = $this->container->get(EventDispatcher::class);
