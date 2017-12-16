@@ -1,1 +1,1 @@
-# 1C Exchange [![Build Status](https://travis-ci.org/stee1cat/1c-exchange.svg?branch=master)](https://travis-ci.org/stee1cat/1c-exchange)
+# 1C Exchange [![Build Status](https://travis-ci.org/stee1cat/commerceml-exchange.svg?branch=master)](https://travis-ci.org/stee1cat/commerceml-exchange)
