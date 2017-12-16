@@ -24,9 +24,8 @@ class CatalogXmlParser implements XmlParserInterface {
 
     public function parse() {
         $result = new Result();
-        $elements = $this->xml->Каталог->Товары->children();
 
-        if (count($elements)) {
+        if ($elements = $this->xml->xpath('./Каталог/Товары/Товар')) {
             $products = $this->walk($elements);
 
             $result->setProducts($products);
@@ -35,6 +34,11 @@ class CatalogXmlParser implements XmlParserInterface {
         return $result;
     }
 
+    /**
+     * @param \SimpleXMLElement[] $nodes
+     *
+     * @return Product[]
+     */
     protected function walk($nodes) {
         $result = [];
 

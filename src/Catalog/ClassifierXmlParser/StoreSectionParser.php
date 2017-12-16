@@ -28,17 +28,16 @@ class StoreSectionParser implements XmlParserInterface {
      */
     public function parse() {
         $result = [];
-        $root = $this->root->Классификатор->Склады->children();
 
-        if (count($root)) {
-            $result = $this->walk($root);
+        if ($stores = $this->root->xpath('./Классификатор/Склады/Склад')) {
+            $result = $this->walk($stores);
         }
 
         return $result;
     }
 
     /**
-     * @param \SimpleXMLElement $nodes
+     * @param \SimpleXMLElement[] $nodes
      *
      * @return Store[]
      */

@@ -28,17 +28,17 @@ class GroupSectionParser implements XmlParserInterface {
      */
     public function parse() {
         $result = [];
-        $root = $this->root->Классификатор->Группы->children();
+        $groups = $this->root->xpath('./Классификатор/Группы/Группа');
 
-        if (count($root)) {
-            $result = $this->walk($root);
+        if (count($groups)) {
+            $result = $this->walk($groups);
         }
 
         return $result;
     }
 
     /**
-     * @param \SimpleXMLElement $nodes
+     * @param \SimpleXMLElement[] $nodes
      *
      * @return Group[]
      */
@@ -48,8 +48,8 @@ class GroupSectionParser implements XmlParserInterface {
         foreach ($nodes as $node) {
             $group = Group::create($node);
 
-            if ($node->Группы) {
-                $children = $this->walk($node->Группы->children());
+            if ($groups = $node->xpath('./Группы/Группа')) {
+                $children = $this->walk($groups);
 
                 $group->setGroups($children);
             }

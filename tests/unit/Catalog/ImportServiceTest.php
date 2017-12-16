@@ -46,7 +46,7 @@ class ImportServiceTest extends Unit {
     }
 
     public function testIsClassifier() {
-        $content = <<<XML
+        $string = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ВерсияСхемы="3.1" ДатаФормирования="2017-12-07T10:00:00">
     <Классификатор СодержитТолькоИзменения="true">
@@ -61,13 +61,13 @@ class ImportServiceTest extends Unit {
 </КоммерческаяИнформация>
 XML;
 
-        $xml = simplexml_load_string($content);
+        $xml = loadXmlString($string);
 
         $this->assertEquals(true, $this->tester->isClassifier($xml));
     }
 
     public function testIsCatalog() {
-        $content = <<<XML
+        $string = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ВерсияСхемы="3.1" ДатаФормирования="2017-12-07T10:00:00">
 	<Каталог СодержитТолькоИзменения="true">
@@ -78,7 +78,7 @@ XML;
 </КоммерческаяИнформация>
 XML;
 
-        $xml = simplexml_load_string($content);
+        $xml = loadXmlString($string);
 
         $this->assertEquals(true, $this->tester->isCatalog($xml));
     }

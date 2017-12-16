@@ -24,7 +24,7 @@ class ClassifierXmlParserTest extends Unit {
 
     protected function _before() {
         $filename = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'import___29d3f7f0-36dd-4eea-a06c-4c325bed4285.xml';
-        $xml = simplexml_load_file($filename);
+        $xml = loadXmlFile($filename);
 
         $this->tester = new ClassifierXmlParser($xml);
     }

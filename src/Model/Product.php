@@ -21,20 +21,47 @@ class Product {
      */
     protected $name;
 
+    /**
+     * @var string[]
+     */
+    protected $groups = [];
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var string
+     */
+    protected $vendorCode;
+
     public static function create(\SimpleXMLElement $element) {
-        $good = new self();
-        $id = (string) $element->Ид;
-        $name = (string) $element->Наименование;
+        $product = new self();
 
-        if ($id) {
-            $good->setId($id);
+        if ($id = $element->xpath('./Ид')) {
+            $product->setId((string) $id[0]);
         }
 
-        if ($name) {
-            $good->setName($name);
+        if ($name = $element->xpath('./Наименование')) {
+            $product->setName((string) $name[0]);
         }
 
-        return $good;
+        if ($description = $element->xpath('./Описание')) {
+            $product->setDescription((string) $description[0]);
+        }
+
+        if ($vendorCode = $element->xpath('./Артикул')) {
+            $product->setVendorCode((string) $vendorCode[0]);
+        }
+
+        if ($groups = $element->xpath('./Группы/Ид')) {
+            foreach ($groups as $group) {
+                $product->addGroup((string) $group);
+            }
+        }
+
+        return $product;
     }
 
     /**
@@ -50,7 +77,7 @@ class Product {
      * @return Product
      */
     public function setId($id) {
-        $this->id = $id;
+        $this->id = trim($id);
 
         return $this;
     }
@@ -68,7 +95,68 @@ class Product {
      * @return Product
      */
     public function setName($name) {
-        $this->name = $name;
+        $this->name = trim($name);
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getGroups() {
+        return $this->groups;
+    }
+
+    /**
+     * @param string[] $groups
+     */
+    public function setGroups($groups) {
+        $this->groups = [];
+
+        foreach ($groups as  $group) {
+            $this->addGroup($group);
+        }
+    }
+
+    /**
+     * @param string $group
+     */
+    public function addGroup($group) {
+        $this->groups[] = trim($group);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return Product
+     */
+    public function setDescription($description) {
+        $this->description = trim($description);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorCode() {
+        return $this->vendorCode;
+    }
+
+    /**
+     * @param string $vendorCode
+     *
+     * @return Product
+     */
+    public function setVendorCode($vendorCode) {
+        $this->vendorCode = trim($vendorCode);
 
         return $this;
     }

@@ -25,7 +25,7 @@ class CatalogXmlParserTest extends Unit {
     protected $tester;
 
     protected function _before() {
-        $content = <<<XML
+        $string = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ВерсияСхемы="3.1" ДатаФормирования="2017-12-07T10:00:00">
     <Каталог СодержитТолькоИзменения="true">
@@ -44,7 +44,7 @@ class CatalogXmlParserTest extends Unit {
     </Каталог>
 </КоммерческаяИнформация>
 XML;
-        $xml = simplexml_load_string($content);
+        $xml = loadXmlString($string);
 
         $this->tester = new CatalogXmlParser($xml);
     }

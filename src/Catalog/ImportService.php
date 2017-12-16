@@ -8,6 +8,7 @@ namespace stee1cat\CommerceMLExchange\Catalog;
 use stee1cat\CommerceMLExchange\Catalog\Exception\CatalogLoadException;
 use stee1cat\CommerceMLExchange\Event\Event;
 use stee1cat\CommerceMLExchange\EventDispatcher;
+use stee1cat\CommerceMLExchange\Xml;
 
 /**
  * Class ImportService
@@ -18,7 +19,7 @@ class ImportService {
     /**
      * @var string
      */
-    protected $content;
+    protected $raw;
 
     /**
      * @var string
@@ -54,24 +55,24 @@ class ImportService {
     }
 
     public function load($file) {
-        $this->content = file_get_contents($file);
+        $this->raw = file_get_contents($file);
 
-        return !!$this->content;
+        return !!$this->raw;
     }
 
     /**
      * @return string
      */
     public function getContent() {
-        return $this->content;
+        return $this->raw;
     }
 
     public function isClassifier(\SimpleXMLElement $xml) {
-        return $xml->Классификатор && (string) $xml->Классификатор->Ид;
+        return !!$xml->xpath('./Классификатор/Ид');
     }
 
     public function isCatalog(\SimpleXMLElement $xml) {
-        return $xml->Каталог && (string) $xml->Каталог->Ид;
+        return !!$xml->xpath('./Каталог/Ид');
     }
 
     /**
@@ -81,7 +82,8 @@ class ImportService {
         $filename = basename($this->file);
 
         if (preg_match('/import_.*\.xml$/i', $filename)) {
-            $xml = simplexml_load_string($this->content);
+            $string = Xml::removeNs($this->raw);
+            $xml = simplexml_load_string($string);
 
             if ($this->isClassifier($xml)) {
                 return new ClassifierXmlParser($xml);
