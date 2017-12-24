@@ -33,15 +33,13 @@ class Group {
      */
     public static function create(\SimpleXMLElement $element) {
         $group = new self();
-        $id = (string) $element->Ид;
-        $name = (string) $element->Наименование;
 
-        if ($id) {
-            $group->setId($id);
+        if ($id = $element->xpath('./Ид')) {
+            $group->setId((string) $id[0]);
         }
 
-        if ($name) {
-            $group->setName($name);
+        if ($name = $element->xpath('./Наименование')) {
+            $group->setName((string) $name[0]);
         }
 
         return $group;

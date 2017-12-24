@@ -33,20 +33,17 @@ class Store {
      */
     public static function create(\SimpleXMLElement $element) {
         $store = new self();
-        $id = (string) $element->Ид;
-        $name = (string) $element->Наименование;
-        $comment = (string) $element->Комментарий;
 
-        if ($id) {
-            $store->setId($id);
+        if ($id = $element->xpath('./Ид')) {
+            $store->setId((string) $id[0]);
         }
 
-        if ($name) {
-            $store->setName($name);
+        if ($name = $element->xpath('./Наименование')) {
+            $store->setName((string) $name[0]);
         }
 
-        if ($comment) {
-            $store->setComment($comment);
+        if ($comment = $element->xpath('./Комментарий')) {
+            $store->setComment((string) $comment[0]);
         }
 
         return $store;
