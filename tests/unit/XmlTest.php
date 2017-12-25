@@ -4,12 +4,13 @@
  * Copyright (c) 2017 Gennadiy Khatuntsev <e.steelcat@gmail.com>
  */
 
+use Codeception\Test\Unit;
 use stee1cat\CommerceMLExchange\Xml;
 
 /**
  * Class XmlTest
  */
-class XmlTest extends \Codeception\Test\Unit {
+class XmlTest extends Unit {
 
     public function testRemoveNs() {
         $stringWithNs = <<<XML

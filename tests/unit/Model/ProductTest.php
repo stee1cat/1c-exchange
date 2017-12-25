@@ -44,4 +44,5 @@ XML;
             $this->assertEquals(1, array_search('d731bdf4-fd2c-11e4-89fa-00155d1f3004', $product->getGroups()));
         });
     }
+
 }

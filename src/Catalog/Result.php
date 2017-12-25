@@ -6,6 +6,7 @@
 namespace stee1cat\CommerceMLExchange\Catalog;
 
 use stee1cat\CommerceMLExchange\Model\Group;
+use stee1cat\CommerceMLExchange\Model\Offer;
 use stee1cat\CommerceMLExchange\Model\Product;
 use stee1cat\CommerceMLExchange\Model\Store;
 
@@ -29,6 +30,11 @@ class Result {
      * @var Group[]
      */
     protected $groups = [];
+
+    /**
+     * @var Offer[]
+     */
+    protected $offers = [];
 
     /**
      * @return Product[]
@@ -80,6 +86,24 @@ class Result {
      */
     public function setGroups($groups) {
         $this->groups = $groups;
+
+        return $this;
+    }
+
+    /**
+     * @return Offer[]
+     */
+    public function getOffers() {
+        return $this->offers;
+    }
+
+    /**
+     * @param Offer[] $offers
+     *
+     * @return Result
+     */
+    public function setOffers($offers) {
+        $this->offers = $offers;
 
         return $this;
     }

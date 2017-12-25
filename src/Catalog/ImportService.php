@@ -82,8 +82,7 @@ class ImportService {
         $filename = basename($this->file);
 
         if (preg_match('/import_.*\.xml$/i', $filename)) {
-            $string = Xml::removeNs($this->raw);
-            $xml = simplexml_load_string($string);
+            $xml = $this->createXml();
 
             if ($this->isClassifier($xml)) {
                 return new ClassifierXmlParser($xml);
@@ -92,6 +91,20 @@ class ImportService {
                 return new CatalogXmlParser($xml);
             }
         }
+        else if (preg_match('/prices_.*\.xml$/i', $filename)) {
+            $xml = $this->createXml();
+
+            return new PriceXmlParser($xml);
+        }
+    }
+
+    /**
+     * @return \SimpleXMLElement
+     */
+    protected function createXml() {
+        $string = Xml::removeNs($this->raw);
+
+        return simplexml_load_string($string);
     }
 
 }
