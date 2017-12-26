@@ -50,7 +50,7 @@ class Offer {
      * @return $this
      */
     public function addPrice(Price $price) {
-        $this->prices[] = $price;
+        $this->prices[$price->getTypeId()] = $price;
 
         return $this;
     }
