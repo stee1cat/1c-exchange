@@ -9,6 +9,7 @@ use Codeception\Specify;
 use Codeception\Test\Unit;
 use stee1cat\CommerceMLExchange\Model\Offer;
 use stee1cat\CommerceMLExchange\Model\Price;
+use stee1cat\CommerceMLExchange\Model\Stock;
 
 /**
  * Class OfferTest
@@ -65,6 +66,26 @@ class OfferTest extends Unit {
             </Налог>
         </Цена>
     </Цены>
+    <Остатки>
+        <Остаток>
+            <Склад>
+                <Ид>9cd90bdf-6dd1-11e1-816d-525400123411</Ид>
+                <Количество>33</Количество>
+            </Склад>
+        </Остаток>
+        <Остаток>
+            <Склад>
+                <Ид>9cd90be0-6dd1-11e1-816d-525400123411</Ид>
+                <Количество>10</Количество>
+            </Склад>
+        </Остаток>
+        <Остаток>
+            <Склад>
+                <Ид>9cd90be1-6dd1-11e1-816d-525400123411</Ид>
+                <Количество>0</Количество>
+            </Склад>
+        </Остаток>
+    </Остатки>
 </Предложение>
 XML;
         $xml = simplexml_load_string($string);
@@ -72,7 +93,12 @@ XML;
 
         $this->specify('validate fields', function () use ($offer) {
             $this->assertEquals('8969768b-d588-11e6-a864-00155d468008', $offer->getProductId());
+
             $this->assertCount(4, $offer->getPrices());
+            $this->assertContainsOnlyInstancesOf(Price::class, $offer->getPrices());
+
+            $this->assertCount(3, $offer->getStockAvailability());
+            $this->assertContainsOnlyInstancesOf(Stock::class, $offer->getStockAvailability());
         });
     }
 
@@ -107,6 +133,37 @@ XML;
         $offer->addPrice($price);
 
         $this->assertCount(2, $offer->getPrices(), 'after add');
+        $this->assertContainsOnlyInstancesOf(Price::class, $offer->getPrices());
+    }
+
+    public function testAddStockAvailability() {
+        $string = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Предложение>
+    <Ид>8969768b-d588-11e6-a864-00155d468008</Ид>
+    <Остатки>
+        <Остаток>
+            <Склад>
+                <Ид>9cd90bdf-6dd1-11e1-816d-525400123411</Ид>
+                <Количество>33</Количество>
+            </Склад>
+        </Остаток>
+    </Остатки>
+</Предложение>
+XML;
+        $xml = simplexml_load_string($string);
+        $offer = Offer::create($xml);
+
+        $stock = new Stock();
+        $stock->setStoreId('9cd90be1-6dd1-11e1-816d-525400123411')
+            ->setQuantity(2);
+
+        $this->assertCount(1, $offer->getStockAvailability(), 'before add');
+
+        $offer->addStockAvailability($stock);
+
+        $this->assertCount(2, $offer->getStockAvailability(), 'after add');
+        $this->assertContainsOnlyInstancesOf(Stock::class, $offer->getStockAvailability());
     }
 
 }

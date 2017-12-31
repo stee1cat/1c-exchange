@@ -53,10 +53,9 @@ XML;
 
         $this->specify('Products', function () use ($result) {
             $products = $result->getProducts();
-            $firstProduct = $products[0];
 
-            $this->assertInstanceOf(Product::class, $firstProduct);
-            $this->assertEquals(2, count($products));
+            $this->assertContainsOnlyInstancesOf(Product::class, $products);
+            $this->assertCount(2, $products);
         });
     }
 

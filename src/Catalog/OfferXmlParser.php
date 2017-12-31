@@ -8,10 +8,10 @@ namespace stee1cat\CommerceMLExchange\Catalog;
 use stee1cat\CommerceMLExchange\Model\Offer;
 
 /**
- * Class PriceXmlParser
+ * Class OfferXmlParser
  * @package stee1cat\CommerceMLExchange\Catalog
  */
-class PriceXmlParser implements XmlParserInterface {
+class OfferXmlParser implements XmlParserInterface {
 
     /**
      * @var \SimpleXMLElement

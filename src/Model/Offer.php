@@ -19,7 +19,12 @@ class Offer {
     /**
      * @var Price[]
      */
-    protected $prices;
+    protected $prices = [];
+
+    /**
+     * @var Stock[]
+     */
+    protected $stockAvailability = [];
 
     /**
      * @param \SimpleXMLElement $element
@@ -38,6 +43,14 @@ class Offer {
                 $price = Price::create($item);
 
                 $offer->addPrice($price);
+            }
+        }
+
+        if ($data = $element->xpath('./Остатки/Остаток/Склад')) {
+            foreach ($data as $item) {
+                $stock = Stock::create($item);
+
+                $offer->addStockAvailability($stock);
             }
         }
 
@@ -60,6 +73,24 @@ class Offer {
      */
     public function getPrices() {
         return $this->prices;
+    }
+
+    /**
+     * @param Stock $stock
+     *
+     * @return $this
+     */
+    public function addStockAvailability(Stock $stock) {
+        $this->stockAvailability[$stock->getStoreId()] = $stock;
+
+        return $this;
+    }
+
+    /**
+     * @return Stock[]
+     */
+    public function getStockAvailability() {
+        return $this->stockAvailability;
     }
 
     /**

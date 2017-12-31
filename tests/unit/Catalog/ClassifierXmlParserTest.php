@@ -32,19 +32,19 @@ class ClassifierXmlParserTest extends Unit {
     public function testParse() {
         $result = $this->tester->parse();
 
-        $this->specify('Groups', function () use ($result) {
+        $this->specify('groups', function () use ($result) {
             $groups = $result->getGroups();
             $firstGroup = $groups[0];
 
-            $this->assertEquals(1, count($groups));
-            $this->assertEquals(11, count($firstGroup->getGroups()));
+            $this->assertCount(1, $groups);
+            $this->assertCount(11, $firstGroup->getGroups());
         });
 
-        $this->specify('Stores', function () use ($result) {
+        $this->specify('stores', function () use ($result) {
             $stores = $result->getStores();
             $firstStore = $stores[0];
 
-            $this->assertEquals(13, count($stores));
+            $this->assertCount(13, $stores);
             $this->assertEquals('Домодедовская таможня', $firstStore->getName());
         });
     }

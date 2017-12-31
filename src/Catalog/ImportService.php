@@ -91,10 +91,10 @@ class ImportService {
                 return new CatalogXmlParser($xml);
             }
         }
-        else if (preg_match('/prices_.*\.xml$/i', $filename)) {
+        else if (preg_match('/(prices|rests)_.*\.xml$/i', $filename)) {
             $xml = $this->createXml();
 
-            return new PriceXmlParser($xml);
+            return new OfferXmlParser($xml);
         }
     }
 
