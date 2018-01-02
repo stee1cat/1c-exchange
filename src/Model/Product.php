@@ -36,6 +36,11 @@ class Product {
      */
     protected $vendorCode;
 
+    /**
+     * @var boolean
+     */
+    protected $markAsDelete = false;
+
     public static function create(\SimpleXMLElement $element) {
         $product = new self();
 
@@ -59,6 +64,10 @@ class Product {
             foreach ($groups as $group) {
                 $product->addGroup((string) $group);
             }
+        }
+
+        if ($markAsDelete = $element->xpath('./ПометкаУдаления')) {
+            $product->setMarkAsDelete((string) $markAsDelete[0] === 'true' || (integer) $markAsDelete[0]);
         }
 
         return $product;
@@ -157,6 +166,24 @@ class Product {
      */
     public function setVendorCode($vendorCode) {
         $this->vendorCode = trim($vendorCode);
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMarkAsDelete() {
+        return $this->markAsDelete;
+    }
+
+    /**
+     * @param boolean $markAsDelete
+     *
+     * @return Product
+     */
+    public function setMarkAsDelete($markAsDelete) {
+        $this->markAsDelete = $markAsDelete;
 
         return $this;
     }

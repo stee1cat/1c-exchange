@@ -27,6 +27,11 @@ class Group {
     protected $groups;
 
     /**
+     * @var boolean
+     */
+    protected $markAsDelete = false;
+
+    /**
      * @param \SimpleXMLElement $element
      *
      * @return Group
@@ -40,6 +45,10 @@ class Group {
 
         if ($name = $element->xpath('./Наименование')) {
             $group->setName((string) $name[0]);
+        }
+
+        if ($markAsDelete = $element->xpath('./ПометкаУдаления')) {
+            $group->setMarkAsDelete((string) $markAsDelete[0] === 'true' || (integer) $markAsDelete[0]);
         }
 
         return $group;
@@ -95,6 +104,24 @@ class Group {
      */
     public function setName($name) {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMarkAsDelete() {
+        return $this->markAsDelete;
+    }
+
+    /**
+     * @param boolean $markAsDelete
+     *
+     * @return Group
+     */
+    public function setMarkAsDelete($markAsDelete) {
+        $this->markAsDelete = $markAsDelete;
 
         return $this;
     }

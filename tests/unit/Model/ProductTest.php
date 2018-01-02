@@ -18,7 +18,7 @@ class ProductTest extends Unit {
     use Specify;
 
     public function testCreate() {
-        $string = <<<XML
+        $product = $this->createProduct(<<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <Товар>
     <Ид>345c3985-4023-11e6-b3ae-00155d1f3004</Ид>
@@ -32,9 +32,8 @@ class ProductTest extends Unit {
         Description
     </Описание>
 </Товар>
-XML;
-        $xml = simplexml_load_string($string);
-        $product = Product::create($xml);
+XML
+        );
 
         $this->specify('validate fields', function () use ($product) {
             $this->assertEquals('345c3985-4023-11e6-b3ae-00155d1f3004', $product->getId());
@@ -43,6 +42,62 @@ XML;
             $this->assertEquals('12345', $product->getVendorCode());
             $this->assertEquals(1, array_search('d731bdf4-fd2c-11e4-89fa-00155d1f3004', $product->getGroups()));
         });
+    }
+
+    public function testMarkAsDelete() {
+        $product1 = $this->createProduct(<<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Товар>
+    <Ид>345c3985-4023-11e6-b3ae-00155d1f3004</Ид>
+    <Наименование>product1</Наименование>
+    <ПометкаУдаления>1</ПометкаУдаления>
+</Товар>
+XML
+        );
+        $this->assertEquals(true, $product1->isMarkAsDelete());
+
+        $product2 = $this->createProduct(<<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Товар>
+    <Ид>345c3985-4023-11e6-b3ae-00155d1f3004</Ид>
+    <Наименование>product2</Наименование>
+    <ПометкаУдаления>0</ПометкаУдаления>
+</Товар>
+XML
+        );
+        $this->assertEquals(false, $product2->isMarkAsDelete());
+
+        $product3 = $this->createProduct(<<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Товар>
+    <Ид>345c3985-4023-11e6-b3ae-00155d1f3004</Ид>
+    <Наименование>product3</Наименование>
+    <ПометкаУдаления>false</ПометкаУдаления>
+</Товар>
+XML
+        );
+        $this->assertEquals(false, $product3->isMarkAsDelete());
+
+        $product4 = $this->createProduct(<<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Товар>
+    <Ид>345c3985-4023-11e6-b3ae-00155d1f3004</Ид>
+    <Наименование>product4</Наименование>
+    <ПометкаУдаления>true</ПометкаУдаления>
+</Товар>
+XML
+        );
+        $this->assertEquals(true, $product4->isMarkAsDelete());
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return Product
+     */
+    protected function createProduct($string) {
+        $xml = simplexml_load_string($string);
+        return Product::create($xml);
     }
 
 }
