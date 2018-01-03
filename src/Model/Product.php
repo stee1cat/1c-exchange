@@ -27,6 +27,11 @@ class Product {
     protected $groups = [];
 
     /**
+     * @var Property[]
+     */
+    protected $properties = [];
+
+    /**
      * @var string
      */
     protected $description;
@@ -63,6 +68,14 @@ class Product {
         if ($groups = $element->xpath('./Группы/Ид')) {
             foreach ($groups as $group) {
                 $product->addGroup((string) $group);
+            }
+        }
+
+        if ($items = $element->xpath('./ЗначенияРеквизитов/ЗначениеРеквизита')) {
+            foreach ($items as $item) {
+                $property = Property::create($item);
+
+                $product->addProperty($property);
             }
         }
 
@@ -186,6 +199,20 @@ class Product {
         $this->markAsDelete = $markAsDelete;
 
         return $this;
+    }
+
+    /**
+     * @return Property[]
+     */
+    public function getProperties() {
+        return $this->properties;
+    }
+
+    /**
+     * @param Property $property
+     */
+    public function addProperty(Property $property) {
+        $this->properties[] = $property;
     }
 
 }

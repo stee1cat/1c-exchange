@@ -8,6 +8,7 @@ namespace Model;
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use stee1cat\CommerceMLExchange\Model\Product;
+use stee1cat\CommerceMLExchange\Model\Property;
 
 /**
  * Class ProductTest
@@ -31,6 +32,16 @@ class ProductTest extends Unit {
     <Описание>
         Description
     </Описание>
+    <ЗначенияРеквизитов>
+        <ЗначениеРеквизита>
+            <Наименование>property1</Наименование>
+            <Значение>value1</Значение>
+        </ЗначениеРеквизита>
+        <ЗначениеРеквизита>
+            <Наименование>property2</Наименование>
+            <Значение>value2</Значение>
+        </ЗначениеРеквизита>
+    </ЗначенияРеквизитов>
 </Товар>
 XML
         );
@@ -40,7 +51,12 @@ XML
             $this->assertEquals('Product #1', $product->getName());
             $this->assertEquals('Description', $product->getDescription());
             $this->assertEquals('12345', $product->getVendorCode());
-            $this->assertEquals(1, array_search('d731bdf4-fd2c-11e4-89fa-00155d1f3004', $product->getGroups()));
+
+            $this->assertCount(2, $product->getGroups());
+            $this->assertContains('d731bdf4-fd2c-11e4-89fa-00155d1f3004', $product->getGroups());
+
+            $this->assertCount(2, $product->getProperties());
+            $this->assertContainsOnlyInstancesOf(Property::class, $product->getProperties());
         });
     }
 
