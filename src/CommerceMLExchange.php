@@ -88,6 +88,13 @@ class CommerceMLExchange {
         $eventDispatcher->addListener($eventName,  $callback);
     }
 
+    /**
+     * @return Container
+     */
+    public function getContainer() {
+        return $this->container;
+    }
+
     protected function bootstrap() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
