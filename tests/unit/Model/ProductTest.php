@@ -60,6 +60,33 @@ XML
         });
     }
 
+    public function testGetProperty() {
+        $product = $this->createProduct(<<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Товар>
+    <Ид>345c3985-4023-11e6-b3ae-00155d1f3004</Ид>
+    <Наименование>Product #1</Наименование>
+    <Артикул>12345</Артикул>
+    <ЗначенияРеквизитов>
+        <ЗначениеРеквизита>
+            <Наименование>property1</Наименование>
+            <Значение>value1</Значение>
+        </ЗначениеРеквизита>
+        <ЗначениеРеквизита>
+            <Наименование>property2</Наименование>
+            <Значение>value2</Значение>
+        </ЗначениеРеквизита>
+    </ЗначенияРеквизитов>
+</Товар>
+XML
+        );
+        $property = $product->getProperty('property2');
+
+        $this->assertInstanceOf(Property::class, $property);
+        $this->assertEquals('property2', $property->getName());
+        $this->assertEquals('value2', $property->getValue());
+    }
+
     public function testMarkAsDelete() {
         $product1 = $this->createProduct(<<<XML
 <?xml version="1.0" encoding="UTF-8"?>

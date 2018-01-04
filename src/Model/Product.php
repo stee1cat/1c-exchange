@@ -212,7 +212,16 @@ class Product {
      * @param Property $property
      */
     public function addProperty(Property $property) {
-        $this->properties[] = $property;
+        $this->properties[$property->getName()] = $property;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return boolean|Property
+     */
+    public function getProperty($name) {
+        return isset($this->properties[$name]) ? $this->properties[$name] : false;
     }
 
 }
