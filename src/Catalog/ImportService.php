@@ -7,6 +7,7 @@ namespace stee1cat\CommerceMLExchange\Catalog;
 
 use stee1cat\CommerceMLExchange\Catalog\Exception\CatalogLoadException;
 use stee1cat\CommerceMLExchange\Event\Event;
+use stee1cat\CommerceMLExchange\Event\Events;
 use stee1cat\CommerceMLExchange\EventDispatcher;
 use stee1cat\CommerceMLExchange\Xml;
 
@@ -47,7 +48,7 @@ class ImportService {
             $parser = $this->createParser();
             $result = $parser->parse();
 
-            $this->eventDispatcher->dispatch('parse', new Event($result));
+            $this->eventDispatcher->dispatch(Events::ON_AFTER_PARSE, new Event($result));
         }
         else {
             throw new CatalogLoadException();
