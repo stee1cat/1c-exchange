@@ -71,7 +71,7 @@ abstract class AbstractController {
         $this->failure('Internal server error');
 
         $this->logger->error($exception->getMessage(), [
-            'trace' => $exception->getTrace(),
+            'trace' => $exception->getTraceAsString(),
         ]);
     }
 
