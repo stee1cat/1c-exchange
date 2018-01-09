@@ -6,10 +6,12 @@
 namespace Catalog;
 
 use Codeception\Test\Unit;
+use Codeception\Util\Stub;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use stee1cat\CommerceMLExchange\Catalog\ImportService;
 use stee1cat\CommerceMLExchange\EventDispatcher;
+use stee1cat\CommerceMLExchange\Logger;
 
 /**
  * Class ImportServiceTest
@@ -28,7 +30,13 @@ class ImportServiceTest extends Unit {
     protected $root;
 
     protected function _before() {
-        $this->tester = new ImportService(new EventDispatcher());
+        /** @var Logger $logger */
+        $logger = Stub::make(Logger::class, [
+            'info' => function () {},
+            'notice' => function () {}
+        ]);
+
+        $this->tester = new ImportService(new EventDispatcher(), $logger);
         $this->root = vfsStream::setup();
     }
 
