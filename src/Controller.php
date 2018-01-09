@@ -101,6 +101,13 @@ class Controller extends AbstractController {
         }
     }
 
+    public function stageDeactivate() {
+        $messsage = 'Deactivate command is not implemented';
+
+        $this->logger->notice($messsage);
+        $this->success($messsage);
+    }
+
     public function stageComplete() {
         $this->success();
     }

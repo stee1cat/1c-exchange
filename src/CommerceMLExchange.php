@@ -56,6 +56,9 @@ class CommerceMLExchange {
                     case 'import':
                         $controller->stageImport();
                         break;
+                    case 'deactivate':
+                        $controller->stageDeactivate();
+                        break;
                     case 'complete':
                         $controller->stageComplete();
                         break;
