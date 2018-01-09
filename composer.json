@@ -21,5 +21,8 @@
         "codeception/codeception": "^2.3",
         "codeception/specify": "^1.0",
         "mikey179/vfsStream": "^1.6"
+    },
+    "scripts": {
+        "tests": "codecept run unit"
     }
 }

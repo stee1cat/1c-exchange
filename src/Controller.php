@@ -7,6 +7,7 @@ namespace stee1cat\CommerceMLExchange;
 
 use stee1cat\CommerceMLExchange\Catalog\ImportService;
 use stee1cat\CommerceMLExchange\Http\AuthData;
+use stee1cat\CommerceMLExchange\Validator\FilenameValidator;
 
 /**
  * Class Controller
@@ -66,15 +67,21 @@ class Controller extends AbstractController {
 
         if (!$filename) {
             $this->failure('Empty filename');
+
+            return false;
         }
 
         if (!$this->validateFilename($filename)) {
             $this->failure('Incorrect file name');
+
+            return false;
         }
 
         $filePath = $this->getFilePath($filename);
         if (!file_exists($filePath)) {
             $this->failure('File not exists');
+
+            return false;
         }
         else {
             try {
@@ -83,9 +90,13 @@ class Controller extends AbstractController {
                 $importService->import($filePath);
 
                 $this->success();
+
+                return true;
             }
             catch (\Exception $e) {
                 $this->internalServerErrorAction($e);
+
+                return false;
             }
         }
     }
@@ -156,7 +167,7 @@ class Controller extends AbstractController {
      * @return boolean
      */
     protected function validateFilename($filename) {
-        return !!preg_match('/^[0-9a-zA-Z_\-.\/]+$/', $filename);
+        return (new FilenameValidator($filename))->validate();
     }
 
 }
