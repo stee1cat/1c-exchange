@@ -54,6 +54,14 @@ class Logger {
      * @param string $message
      * @param array $context
      */
+    public function notice($message, $context = []) {
+        $this->logger->notice($message, $context);
+    }
+
+    /**
+     * @param string $message
+     * @param array $context
+     */
     public function error($message, $context = []) {
         $this->logger->error($message, $context);
     }

@@ -9,6 +9,7 @@ use stee1cat\CommerceMLExchange\Catalog\Exception\CatalogLoadException;
 use stee1cat\CommerceMLExchange\Event\Event;
 use stee1cat\CommerceMLExchange\Event\Events;
 use stee1cat\CommerceMLExchange\EventDispatcher;
+use stee1cat\CommerceMLExchange\Logger;
 use stee1cat\CommerceMLExchange\Xml;
 
 /**
@@ -32,8 +33,14 @@ class ImportService {
      */
     protected $eventDispatcher;
 
-    public function __construct(EventDispatcher $eventDispatcher) {
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    public function __construct(EventDispatcher $eventDispatcher, Logger $logger) {
         $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $logger;
     }
 
     /**
@@ -46,9 +53,17 @@ class ImportService {
 
         if ($this->load($file)) {
             $parser = $this->createParser();
-            $result = $parser->parse();
 
-            $this->eventDispatcher->dispatch(Events::ON_AFTER_PARSE, new Event($result));
+            if ($parser) {
+                $result = $parser->parse();
+
+                $this->eventDispatcher->dispatch(Events::ON_AFTER_PARSE, new Event($result));
+            }
+            else {
+                $this->logger->notice('Parser not found', [
+                    'filename' => $file,
+                ]);
+            }
         }
         else {
             throw new CatalogLoadException();
@@ -77,7 +92,7 @@ class ImportService {
     }
 
     /**
-     * @return XmlParserInterface
+     * @return XmlParserInterface|boolean
      */
     protected function createParser() {
         $filename = basename($this->file);
@@ -97,6 +112,8 @@ class ImportService {
 
             return new OfferXmlParser($xml);
         }
+
+        return false;
     }
 
     /**
