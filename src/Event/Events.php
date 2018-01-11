@@ -11,6 +11,8 @@ namespace stee1cat\CommerceMLExchange\Event;
  */
 class Events {
 
-    const ON_AFTER_PARSE = 'after_parse';
+    const ON_IMPORT = 'import';
+    const ON_DEACTIVATE = 'deactivate';
+    const ON_COMPLETE = 'complete';
 
 }

@@ -57,7 +57,7 @@ class ImportService {
             if ($parser) {
                 $result = $parser->parse();
 
-                $this->eventDispatcher->dispatch(Events::ON_AFTER_PARSE, new Event($result));
+                $this->eventDispatcher->dispatch(Events::ON_IMPORT, new Event($result));
             }
             else {
                 $this->logger->notice('Parser not found', [

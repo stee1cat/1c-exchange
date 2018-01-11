@@ -6,6 +6,7 @@
 namespace stee1cat\CommerceMLExchange;
 
 use stee1cat\CommerceMLExchange\Catalog\ImportService;
+use stee1cat\CommerceMLExchange\Event\Events;
 use stee1cat\CommerceMLExchange\Http\AuthData;
 use stee1cat\CommerceMLExchange\Validator\FilenameValidator;
 
@@ -102,13 +103,14 @@ class Controller extends AbstractController {
     }
 
     public function stageDeactivate() {
-        $messsage = 'Deactivate command is not implemented';
+        $this->eventDispatcher->dispatch(Events::ON_DEACTIVATE);
 
-        $this->logger->notice($messsage);
-        $this->success($messsage);
+        $this->success();
     }
 
     public function stageComplete() {
+        $this->eventDispatcher->dispatch(Events::ON_COMPLETE);
+
         $this->success();
     }
 

@@ -35,6 +35,11 @@ abstract class AbstractController {
     protected $request;
 
     /**
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * AbstractController constructor.
      *
      * @param Container $container
@@ -48,6 +53,7 @@ abstract class AbstractController {
         $this->logger = $container->get(Logger::class);
         $this->config = $container->get(Config::class);
         $this->request = $container->get(Request::class);
+        $this->eventDispatcher = $container->get(EventDispatcher::class);
     }
 
     public function beforeAction() {
