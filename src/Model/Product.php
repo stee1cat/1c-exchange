@@ -46,6 +46,11 @@ class Product {
      */
     protected $markAsDelete = false;
 
+    /**
+     * @var string
+     */
+    protected $image;
+
     public static function create(\SimpleXMLElement $element) {
         $product = new self();
 
@@ -81,6 +86,10 @@ class Product {
 
         if ($markAsDelete = $element->xpath('./ПометкаУдаления')) {
             $product->setMarkAsDelete((string) $markAsDelete[0] === 'true' || (integer) $markAsDelete[0]);
+        }
+
+        if ($image = $element->xpath('./Картинка')) {
+            $product->setImage((string) $image[0]);
         }
 
         return $product;
@@ -222,6 +231,24 @@ class Product {
      */
     public function getProperty($name) {
         return isset($this->properties[$name]) ? $this->properties[$name] : false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage() {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     *
+     * @return Product
+     */
+    public function setImage($image) {
+        $this->image = $image;
+
+        return $this;
     }
 
 }

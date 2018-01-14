@@ -32,6 +32,7 @@ class ProductTest extends Unit {
     <Описание>
         Description
     </Описание>
+    <Картинка>image.gif</Картинка>
     <ЗначенияРеквизитов>
         <ЗначениеРеквизита>
             <Наименование>property1</Наименование>
@@ -51,6 +52,7 @@ XML
             $this->assertEquals('Product #1', $product->getName());
             $this->assertEquals('Description', $product->getDescription());
             $this->assertEquals('12345', $product->getVendorCode());
+            $this->assertEquals('image.gif', $product->getImage());
 
             $this->assertCount(2, $product->getGroups());
             $this->assertContains('d731bdf4-fd2c-11e4-89fa-00155d1f3004', $product->getGroups());
