@@ -89,7 +89,9 @@ class Product {
         }
 
         if ($image = $element->xpath('./Картинка')) {
-            $product->setImage((string) $image[0]);
+            $filename = basename((string) $image[0]);
+
+            $product->setImage($filename);
         }
 
         return $product;
