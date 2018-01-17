@@ -10,6 +10,7 @@ use stee1cat\CommerceMLExchange\Event\Event;
 use stee1cat\CommerceMLExchange\Event\Events;
 use stee1cat\CommerceMLExchange\EventDispatcher;
 use stee1cat\CommerceMLExchange\Logger;
+use stee1cat\CommerceMLExchange\Model\Metadata;
 use stee1cat\CommerceMLExchange\Xml;
 
 /**
@@ -22,6 +23,11 @@ class ImportService {
      * @var string
      */
     protected $raw;
+
+    /**
+     * @var \SimpleXMLElement
+     */
+    protected $xml;
 
     /**
      * @var string
@@ -56,6 +62,10 @@ class ImportService {
 
             if ($parser) {
                 $result = $parser->parse();
+
+                if ($metadata = $this->parseMetadata()) {
+                    $result->setMetadata($metadata);
+                }
 
                 $this->eventDispatcher->dispatch(Events::ON_IMPORT, new Event($result));
             }
@@ -92,25 +102,34 @@ class ImportService {
     }
 
     /**
+     * @return Metadata|null
+     */
+    protected function parseMetadata() {
+        if ($this->xml) {
+            return Metadata::create($this->xml);
+        }
+    }
+
+    /**
      * @return XmlParserInterface|boolean
      */
     protected function createParser() {
         $filename = basename($this->file);
 
         if (preg_match('/import_.*\.xml$/i', $filename)) {
-            $xml = $this->createXml();
+            $this->xml = $this->createXml();
 
-            if ($this->isClassifier($xml)) {
-                return new ClassifierXmlParser($xml);
+            if ($this->isClassifier($this->xml)) {
+                return new ClassifierXmlParser($this->xml);
             }
-            else if ($this->isCatalog($xml)) {
-                return new CatalogXmlParser($xml);
+            else if ($this->isCatalog($this->xml)) {
+                return new CatalogXmlParser($this->xml);
             }
         }
         else if (preg_match('/(prices|rests)_.*\.xml$/i', $filename)) {
-            $xml = $this->createXml();
+            $this->xml = $this->createXml();
 
-            return new OfferXmlParser($xml);
+            return new OfferXmlParser($this->xml);
         }
 
         return false;

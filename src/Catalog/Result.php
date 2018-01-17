@@ -6,6 +6,7 @@
 namespace stee1cat\CommerceMLExchange\Catalog;
 
 use stee1cat\CommerceMLExchange\Model\Group;
+use stee1cat\CommerceMLExchange\Model\Metadata;
 use stee1cat\CommerceMLExchange\Model\Offer;
 use stee1cat\CommerceMLExchange\Model\Product;
 use stee1cat\CommerceMLExchange\Model\Store;
@@ -35,6 +36,11 @@ class Result {
      * @var Offer[]
      */
     protected $offers = [];
+
+    /**
+     * @var Metadata
+     */
+    protected $metadata;
 
     /**
      * @return Product[]
@@ -106,6 +112,20 @@ class Result {
         $this->offers = $offers;
 
         return $this;
+    }
+
+    /**
+     * @param Metadata $metadata
+     */
+    public function setMetadata(Metadata $metadata) {
+        $this->metadata = $metadata;
+    }
+
+    /**
+     * @return Metadata|null
+     */
+    public function getMetadata() {
+        return $this->metadata;
     }
 
 }
