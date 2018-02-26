@@ -33,6 +33,10 @@ class CommerceMLExchange {
         $this->bootstrap();
     }
 
+    /**
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
     public function start() {
         $controller = new Controller($this->container);
 
